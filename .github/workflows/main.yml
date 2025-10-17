@@ -33,9 +33,9 @@ jobs:
 
       - name: Set up Databricks CLI
         uses: databricks/setup-cli@main
-        with:
-          databricks-host: ${{ env.DATABRICKS_HOST }}
-          databricks-token: ${{ env.DATABRICKS_TOKEN }}
+        # with:
+        #   databricks-host: ${{ env.DATABRICKS_HOST }}
+        #   databricks-token: ${{ env.DATABRICKS_TOKEN }}
 
       - name: Extract branch name
         id: extract_branch
@@ -68,12 +68,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Manual Approval before UAT
-        uses: trstringer/manual-approval@v1
-        with:
-          approvers: your.email@domain.com
-          issue-title: "Approve UAT Deployment"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Manual Approval before UAT
+      #   uses: trstringer/manual-approval@v1
+        # with:
+        #   approvers: your.email@domain.com
+        #   issue-title: "Approve UAT Deployment"
+        #   repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -82,9 +82,9 @@ jobs:
 
       - name: Set up Databricks CLI
         uses: databricks/setup-cli@main
-        with:
-          databricks-host: ${{ env.DATABRICKS_HOST }}
-          databricks-token: ${{ env.DATABRICKS_TOKEN }}
+        # with:
+        #   databricks-host: ${{ env.DATABRICKS_HOST }}
+        #   databricks-token: ${{ env.DATABRICKS_TOKEN }}
 
       - name: Extract branch name
         id: extract_branch
@@ -94,11 +94,11 @@ jobs:
         run: |
           databricks repos update "${{ env.REPO_PATH }}" \
             --branch "${{ steps.extract_branch.outputs.branch }}" \
-            || databricks repos create \
-              --url https://github.com/${{ github.repository }} \
-              --provider gitHub \
-              --path "${{ env.REPO_PATH }}" \
-              --branch "${{ steps.extract_branch.outputs.branch }}"
+            # || databricks repos create \
+            #   --url https://github.com/${{ github.repository }} \
+            #   --provider gitHub \
+            #   --path "${{ env.REPO_PATH }}" \
+            #   --branch "${{ steps.extract_branch.outputs.branch }}"
 
   # ----------------------
   # DEPLOY TO PROD
@@ -117,12 +117,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Manual Approval before PROD
-        uses: trstringer/manual-approval@v1
-        with:
-          approvers: your.email@domain.com
-          issue-title: "Approve PROD Deployment"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Manual Approval before PROD
+      #   uses: trstringer/manual-approval@v1
+      #   with:
+      #     approvers: your.email@domain.com
+      #     issue-title: "Approve PROD Deployment"
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -131,9 +131,9 @@ jobs:
 
       - name: Set up Databricks CLI
         uses: databricks/setup-cli@main
-        with:
-          databricks-host: ${{ env.DATABRICKS_HOST }}
-          databricks-token: ${{ env.DATABRICKS_TOKEN }}
+        # with:
+        #   databricks-host: ${{ env.DATABRICKS_HOST }}
+        #   databricks-token: ${{ env.DATABRICKS_TOKEN }}
 
       - name: Extract branch name
         id: extract_branch
@@ -143,8 +143,8 @@ jobs:
         run: |
           databricks repos update "${{ env.REPO_PATH }}" \
             --branch "${{ steps.extract_branch.outputs.branch }}" \
-            || databricks repos create \
-              --url https://github.com/${{ github.repository }} \
-              --provider gitHub \
-              --path "${{ env.REPO_PATH }}" \
-              --branch "${{ steps.extract_branch.outputs.branch }}"
+            # || databricks repos create \
+            #   --url https://github.com/${{ github.repository }} \
+            #   --provider gitHub \
+            #   --path "${{ env.REPO_PATH }}" \
+            #   --branch "${{ steps.extract_branch.outputs.branch }}"
