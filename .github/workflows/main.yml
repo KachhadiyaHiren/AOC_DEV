@@ -20,7 +20,8 @@ jobs:
     env:
       DATABRICKS_HOST: ${{ secrets.DEV_DEPLOYMENT_URL }}
       DATABRICKS_TOKEN: ${{ secrets.DEV_DEVELOPMENT_TOKEN }}
-      REPO_PATH: /Workspace/Users/naman.doshi@datacurate.ai/AOC_DEV_FOLDER
+      REPO_PATH: /Workspace/Repos/naman.doshi@datacurate.ai/AOC_DEV_FOLDER
+      
 
     steps:
       - name: Checkout repository
@@ -54,7 +55,7 @@ jobs:
     env:
       DATABRICKS_HOST: ${{ secrets.DEV_DEPLOYMENT_URL }}
       DATABRICKS_TOKEN: ${{ secrets.DEV_DEVELOPMENT_TOKEN }}
-      REPO_PATH: /Workspace/Users/naman.doshi@datacurate.ai/AOC_UAT_FOLDER
+      REPO_PATH: /Workspace/Repos/naman.doshi@datacurate.ai/AOC_UAT_FOLDER
 
     steps:
       - name: Checkout repository
@@ -88,7 +89,7 @@ jobs:
     env:
       DATABRICKS_HOST: ${{ secrets.DEV_DEPLOYMENT_URL }}
       DATABRICKS_TOKEN: ${{ secrets.DEV_DEVELOPMENT_TOKEN }}
-      REPO_PATH: /Workspace/Users/naman.doshi@datacurate.ai/AOC_PROD_FOLDER
+      REPO_PATH: /Workspace/Repos/naman.doshi@datacurate.ai/AOC_PROD_FOLDER
 
     steps:
       - name: Checkout repository
