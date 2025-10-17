@@ -1,0 +1,150 @@
+name: Databricks CI/CD - DEV → UAT → PROD
+
+on:
+  push:
+    paths-ignore:
+      - .github/**
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  # ----------------------
+  # DEPLOY TO DEV
+  # ----------------------
+  deploy-dev:
+    runs-on: ubuntu-latest
+    environment: development
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DEV_DEPLOYMENT_URL }}
+      DATABRICKS_TOKEN: ${{ secrets.DEV_DEVELOPMENT_TOKEN }}
+      REPO_PATH: /Workspace/Users/naman.doshi@datacurate.ai/AOC_DEV_FOLDER
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@v2
+        with:
+          databricks-host: ${{ env.DATABRICKS_HOST }}
+          databricks-token: ${{ env.DATABRICKS_TOKEN }}
+
+      - name: Extract branch name
+        id: extract_branch
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Update Databricks Repo (DEV)
+        run: |
+          databricks repos update "${{ env.REPO_PATH }}" \
+            --branch "${{ steps.extract_branch.outputs.branch }}" \
+            # || databricks repos create \
+            #   --url https://github.com/${{ github.repository }} \
+            #   --provider gitHub \
+            #   --path "${{ env.REPO_PATH }}" \
+            #   --branch "${{ steps.extract_branch.outputs.branch }}"
+
+  # ----------------------
+  # DEPLOY TO UAT
+  # ----------------------
+  deploy-uat:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/uat'
+    environment: uat
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DEV_DEPLOYMENT_URL }}
+      DATABRICKS_TOKEN: ${{ secrets.DEV_DEVELOPMENT_TOKEN }}
+      REPO_PATH: /Workspace/Users/naman.doshi@datacurate.ai/AOC_UAT_FOLDER
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Manual Approval before UAT
+        uses: trstringer/manual-approval@v1
+        with:
+          approvers: your.email@domain.com
+          issue-title: "Approve UAT Deployment"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@v2
+        with:
+          databricks-host: ${{ env.DATABRICKS_HOST }}
+          databricks-token: ${{ env.DATABRICKS_TOKEN }}
+
+      - name: Extract branch name
+        id: extract_branch
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Update Databricks Repo (UAT)
+        run: |
+          databricks repos update "${{ env.REPO_PATH }}" \
+            --branch "${{ steps.extract_branch.outputs.branch }}" \
+            || databricks repos create \
+              --url https://github.com/${{ github.repository }} \
+              --provider gitHub \
+              --path "${{ env.REPO_PATH }}" \
+              --branch "${{ steps.extract_branch.outputs.branch }}"
+
+  # ----------------------
+  # DEPLOY TO PROD
+  # ----------------------
+  deploy-prod:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DEV_DEPLOYMENT_URL }}
+      DATABRICKS_TOKEN: ${{ secrets.DEV_DEVELOPMENT_TOKEN }}
+      REPO_PATH: /Workspace/Users/naman.doshi@datacurate.ai/AOC_PROD_FOLDER
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Manual Approval before PROD
+        uses: trstringer/manual-approval@v1
+        with:
+          approvers: your.email@domain.com
+          issue-title: "Approve PROD Deployment"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@v2
+        with:
+          databricks-host: ${{ env.DATABRICKS_HOST }}
+          databricks-token: ${{ env.DATABRICKS_TOKEN }}
+
+      - name: Extract branch name
+        id: extract_branch
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Update Databricks Repo (PROD)
+        run: |
+          databricks repos update "${{ env.REPO_PATH }}" \
+            --branch "${{ steps.extract_branch.outputs.branch }}" \
+            || databricks repos create \
+              --url https://github.com/${{ github.repository }} \
+              --provider gitHub \
+              --path "${{ env.REPO_PATH }}" \
+              --branch "${{ steps.extract_branch.outputs.branch }}"
