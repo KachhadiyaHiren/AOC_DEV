@@ -27,12 +27,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v3
         with:
           python-version: '3.10'
 
       - name: Set up Databricks CLI
-        uses: databricks/setup-cli@v2
+        uses: databricks/setup-cli@main
         with:
           databricks-host: ${{ env.DATABRICKS_HOST }}
           databricks-token: ${{ env.DATABRICKS_TOKEN }}
@@ -81,7 +81,7 @@ jobs:
           python-version: '3.10'
 
       - name: Set up Databricks CLI
-        uses: databricks/setup-cli@v2
+        uses: databricks/setup-cli@main
         with:
           databricks-host: ${{ env.DATABRICKS_HOST }}
           databricks-token: ${{ env.DATABRICKS_TOKEN }}
@@ -130,7 +130,7 @@ jobs:
           python-version: '3.10'
 
       - name: Set up Databricks CLI
-        uses: databricks/setup-cli@v2
+        uses: databricks/setup-cli@main
         with:
           databricks-host: ${{ env.DATABRICKS_HOST }}
           databricks-token: ${{ env.DATABRICKS_TOKEN }}
