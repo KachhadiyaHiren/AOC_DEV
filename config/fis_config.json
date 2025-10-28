@@ -1,0 +1,15 @@
+{
+  "api": {
+    "base_url": "https://api.fis-ski.com",
+    "client_id": "15",
+    "client_secret": "OrJ3iTJi3XyPTBah6VVEc0zb0KZ0SrZmtPbSf56j",
+    "username": "trent.hopkinson@ausport.gov.au",
+    "password": "sgPYD!af&H"
+  },
+  "storage": {
+    "base_path": "abfss://rawarchive@aocworkspacestoragedev.dfs.core.windows.net"
+  },
+  "catalog": {
+    "base_catalog": "dev_aoc_catalog"
+  }
+}
