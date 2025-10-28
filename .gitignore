@@ -1,0 +1,11 @@
+# Ignore local configs or credentials
+configs/*.json
+
+# But keep a template config file for reference
+!configs/config_template.json
+
+# Ignore notebooks' checkpoints and compiled files
+__pycache__/
+.ipynb_checkpoints/
+*.log
+*.tmp
