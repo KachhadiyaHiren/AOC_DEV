@@ -64,7 +64,7 @@ jobs:
     if: github.event_name == 'push' || github.event.inputs.environment == 'development' || github.event.inputs.environment == 'all'
     environment: 
       name: development
-      url: ${{ secrets.DEV_DEPLOYMENT_URL }}
+      # url: ${{ secrets.DEV_DEPLOYMENT_URL }}
     
     env:
       DATABRICKS_HOST: ${{ secrets.DEV_DEPLOYMENT_URL }}
@@ -128,7 +128,7 @@ jobs:
       github.event.inputs.environment == 'all'
     environment: 
       name: uat
-      url: ${{ secrets.DEV_DEPLOYMENT_URL }}
+      # url: ${{ secrets.DEV_DEPLOYMENT_URL }}
     
     env:
       DATABRICKS_HOST: ${{ secrets.DEV_DEPLOYMENT_URL }}
@@ -197,7 +197,7 @@ jobs:
       github.event.inputs.environment == 'all'
     environment: 
       name: production
-      url: ${{ secrets.DEV_DEPLOYMENT_URL }}
+      # url: ${{ secrets.DEV_DEPLOYMENT_URL }}
     
     env:
       DATABRICKS_HOST: ${{ secrets.DEV_DEPLOYMENT_URL }}
